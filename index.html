@@ -336,9 +336,9 @@
               <a href="mailto:info@elenapetraroli.it" class="cta on-light">Contattami</a>
             </div>
           </div>
-          <a class="map-frame" href="https://goo.gl/maps/nFeuMJ36toneEVgRA" target="_blank" rel="noopener">
+          <a class="map-frame" id="mapLink" href="https://www.google.com/maps/search/?api=1&query=Via+Imbriani+17%2C+73100+Lecce" target="_blank" rel="noopener">
             <div class="pin"></div>
-            <span class="map-label">Via Imbriani, 17 — apri su Google Maps ↗</span>
+            <span class="map-label" id="mapLabel">Via Imbriani, 17 — apri su Google Maps ↗</span>
           </a>
         </div>
         <div class="convenzioni-badge">
@@ -434,6 +434,16 @@
   }
 
   updateChrome();
+
+  // ---- Mappa: su dispositivi Apple apri Apple Maps invece di forzare Google Maps ----
+  const isAppleDevice = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)
+    && /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|Edg/.test(navigator.userAgent);
+  const mapLink = document.getElementById('mapLink');
+  const mapLabel = document.getElementById('mapLabel');
+  if(mapLink && isAppleDevice){
+    mapLink.href = 'https://maps.apple.com/?address=Via%20Imbriani%2017,%2073100%20Lecce,%20Italia';
+    mapLabel.textContent = 'Via Imbriani, 17 — apri su Apple Maps ↗';
+  }
 </script>
 
 </body>
