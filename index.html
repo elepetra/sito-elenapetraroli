@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#081B2E;        /* blu notte - fondo scuro primario */
+    --ink:#163A56;        /* blu notte - fondo scuro primario (schiarito) */
     --ink-2:#0C2B47;      /* blu profondo secondario */
     --azure:#2E8FC4;      /* azzurro - accento primario */
     --azure-light:#9AD8F0;/* azzurro chiaro - glow / highlight */
@@ -22,41 +22,36 @@
     --line-light: rgba(15,36,54,0.14);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html,body{height:100%; height:100dvh; overflow:hidden; overscroll-behavior:none;}
+  html{scroll-behavior:auto;}
   body{
     font-family:'Inter', sans-serif;
     background:var(--ink);
     color:var(--paper);
     -webkit-font-smoothing:antialiased;
   }
-  .track{position:relative; width:100%; height:100vh; height:100dvh; overflow:hidden;}
+  .track{position:relative; width:100%;}
   section{
-    position:absolute; inset:0; width:100%; height:100%;
+    position:relative; width:100%; min-height:100vh; min-height:100dvh;
     display:flex; align-items:center;
     padding-top:104px; padding-bottom:48px;
-    transform:translateY(100%);
-    transition:transform .95s cubic-bezier(.65,0,.24,1);
-    will-change:transform;
-    touch-action:none;
+    overflow:hidden;
   }
-  section.active{transform:translateY(0);}
-  section.prev{transform:translateY(-100%);}
   section[data-bg="dark"]{background:var(--ink);}
   section[data-bg="light"]{background:var(--paper);}
 
   .bg-photo{position:absolute; inset:0; background-size:cover; background-position:center;}
-  .veil-dark{position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,27,46,.35) 0%, rgba(8,27,46,.55) 45%, rgba(8,27,46,.92) 100%);}
+  .veil-dark{position:absolute; inset:0; background:linear-gradient(180deg, rgba(22,58,86,.35) 0%, rgba(22,58,86,.55) 45%, rgba(22,58,86,.92) 100%);}
   .veil-hero{position:absolute; inset:0; background:
-    linear-gradient(100deg, rgba(8,27,46,.90) 0%, rgba(8,27,46,.72) 30%, rgba(8,27,46,.28) 52%, rgba(8,27,46,.05) 66%),
-    linear-gradient(180deg, rgba(8,27,46,0) 78%, rgba(8,27,46,.6) 100%);}
-  .veil-azure{position:absolute; inset:0; background:linear-gradient(160deg, rgba(8,27,46,.55) 0%, rgba(46,143,196,.55) 60%, rgba(8,27,46,.85) 100%);}
+    linear-gradient(100deg, rgba(22,58,86,.90) 0%, rgba(22,58,86,.72) 30%, rgba(22,58,86,.28) 52%, rgba(22,58,86,.05) 66%),
+    linear-gradient(180deg, rgba(22,58,86,0) 78%, rgba(22,58,86,.6) 100%);}
+  .veil-azure{position:absolute; inset:0; background:linear-gradient(160deg, rgba(22,58,86,.55) 0%, rgba(46,143,196,.55) 60%, rgba(22,58,86,.85) 100%);}
 
   .glow{position:absolute; border-radius:50%; filter:blur(2px); pointer-events:none;
     background:radial-gradient(circle, rgba(154,216,240,.35) 0%, rgba(154,216,240,0) 70%);}
 
   .content{position:relative; z-index:3; width:100%; padding:0 7vw;}
-  .content-inner{max-width:640px; opacity:0; transform:translateY(26px); transition:opacity .8s ease, transform .8s ease; transition-delay:.25s;}
-  section.active .content-inner{opacity:1; transform:translateY(0);}
+  .content-inner{max-width:640px; opacity:0; transform:translateY(26px); transition:opacity .8s ease, transform .8s ease; transition-delay:.1s;}
+  section.in-view .content-inner{opacity:1; transform:translateY(0);}
 
   .eyebrow{
     font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:.22em;
@@ -96,7 +91,7 @@
   /* ---- LOGO fisso ---- */
   .top-bar{
     position:fixed; inset:0 0 auto 0; height:104px; z-index:15;
-    background:linear-gradient(180deg, rgba(8,27,46,.55) 0%, rgba(8,27,46,.28) 55%, rgba(8,27,46,0) 100%);
+    background:linear-gradient(180deg, rgba(22,58,86,.55) 0%, rgba(22,58,86,.28) 55%, rgba(22,58,86,0) 100%);
     pointer-events:none;
   }
   .top-bar.on-light{background:linear-gradient(180deg, rgba(238,246,250,.85) 0%, rgba(238,246,250,.5) 55%, rgba(238,246,250,0) 100%);}
@@ -123,13 +118,17 @@
     white-space:nowrap; opacity:0; transition:opacity .25s ease; pointer-events:none;
   }
   .dotnav button.active .lbl{opacity:1;}
+  .dotnav.on-light .line{background:var(--line-light);}
+  .dotnav.on-light button{border-color:var(--azure);}
+  .dotnav.on-light button.active{background:var(--azure);}
+  .dotnav.on-light button .lbl{color:var(--azure);}
 
   /* ---- scroll hint ---- */
   .scroll-hint{
     position:absolute; bottom:34px; left:50%; transform:translateX(-50%); z-index:5;
     display:flex; flex-direction:column; align-items:center; gap:8px;
     font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:.16em; color:var(--azure-light);
-    text-transform:uppercase; animation:bob 2.4s ease-in-out infinite;
+    text-transform:uppercase; animation:bob 2.4s ease-in-out infinite; cursor:pointer;
   }
   .scroll-hint svg{width:16px; height:16px;}
   @keyframes bob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,8px);}}
@@ -142,7 +141,7 @@
   }
   .area-tile .bg-photo{opacity:.28; transition:opacity .4s ease, transform .5s ease;}
   .area-tile:hover .bg-photo{opacity:.55; transform:scale(1.06);}
-  .area-tile .tile-veil{position:absolute; inset:0; background:linear-gradient(200deg, rgba(8,27,46,.4), rgba(8,27,46,.88));}
+  .area-tile .tile-veil{position:absolute; inset:0; background:linear-gradient(200deg, rgba(22,58,86,.4), rgba(22,58,86,.88));}
   .area-tile .tile-content{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:16px;}
   .area-tile .num{font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--azure-light); margin-bottom:6px;}
   .area-tile .name{font-family:'Lora', serif; font-size:15.5px; color:#fff;}
@@ -152,7 +151,7 @@
   .split-text{flex:0 0 46%; padding:0 5vw;}
   .split-photo{flex:0 0 54%; height:100%; position:relative; overflow:hidden;}
   .split-photo .bg-photo{filter:saturate(.85) contrast(1.02);}
-  .split-photo .duo{position:absolute; inset:0; background:linear-gradient(100deg, rgba(8,27,46,.88) 0%, rgba(8,27,46,.05) 38%);}
+  .split-photo .duo{position:absolute; inset:0; background:linear-gradient(100deg, rgba(22,58,86,.88) 0%, rgba(22,58,86,.05) 38%);}
 
   /* ---- Contatti ---- */
   .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; width:100%; max-width:900px;}
@@ -346,13 +345,13 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 <script>
   const sections = Array.from(document.querySelectorAll('#track > section'));
   const dotnav = document.getElementById('dotnav');
   const logoFixed = document.getElementById('logoFixed');
+  const topBar = document.getElementById('topBar');
   let current = 0;
-  let animating = false;
-  const DURATION = 950;
 
   // costruisci griglia aree
   const aree = ["Ansia","Attacchi di panico","Depressione","Traumi e lutti","Disturbi alimentari","Disturbi psicosomatici","Dipendenze patologiche","Terapia di coppia"];
@@ -367,65 +366,69 @@
     grid.appendChild(tile);
   });
 
-  // costruisci dot nav
+  // ---- Lenis: scroll continuo e morbido (con fallback se il CDN non risponde) ----
+  let lenis = null;
+  try{
+    lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+    (function raf(time){
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    })();
+  }catch(e){
+    console.warn('Lenis non disponibile, uso lo scroll nativo del browser.', e);
+  }
+  function smoothScrollTo(target){
+    if(lenis) lenis.scrollTo(target, {offset:0});
+    else target.scrollIntoView({behavior:'smooth'});
+  }
+
+  // ---- Filo dei puntini: ora sono jump link veri (scroll fluido alla sezione) ----
   sections.forEach((sec,i)=>{
     const btn = document.createElement('button');
     if(i===0) btn.classList.add('active');
     btn.innerHTML = `<span class="lbl">Seduta ${String(i+1).padStart(2,'0')}/${sections.length} — ${sec.dataset.label}</span>`;
-    btn.addEventListener('click', ()=>goTo(i));
+    btn.addEventListener('click', ()=> smoothScrollTo(sec));
     dotnav.appendChild(btn);
   });
   const dots = () => Array.from(dotnav.querySelectorAll('button'));
 
-  function render(){
-    sections.forEach((sec,i)=>{
-      sec.classList.remove('active','prev');
-      if(i===current) sec.classList.add('active');
-      else if(i<current) sec.classList.add('prev');
-    });
+  function updateChrome(){
     dots().forEach((d,i)=>d.classList.toggle('active', i===current));
     const bgMode = sections[current].dataset.bg;
     logoFixed.classList.toggle('on-light', bgMode==='light');
-    document.getElementById('topBar').classList.toggle('on-light', bgMode==='light');
+    topBar.classList.toggle('on-light', bgMode==='light');
+    dotnav.classList.toggle('on-light', bgMode==='light');
   }
 
-  function goTo(index){
-    if(animating || index===current || index<0 || index>=sections.length) return;
-    animating = true;
-    current = index;
-    render();
-    setTimeout(()=>{animating=false;}, DURATION);
+  // ---- IntersectionObserver: rivela i contenuti e aggiorna nav/logo mentre si scorre ----
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const idx = sections.indexOf(entry.target);
+      if(entry.isIntersecting) entry.target.classList.add('in-view');
+      if(entry.intersectionRatio > 0.5){
+        current = idx;
+        updateChrome();
+      }
+    });
+  }, {threshold:[0, 0.5, 1]});
+  sections.forEach(s => observer.observe(s));
+
+  // ---- Scroll-hint nella Home: jump link verso la sezione successiva ----
+  const scrollHint = document.querySelector('.scroll-hint');
+  if(scrollHint){
+    scrollHint.addEventListener('click', ()=>{
+      const homeIdx = sections.findIndex(s => s.dataset.label === 'Home');
+      const next = sections[homeIdx + 1];
+      if(next) smoothScrollTo(next);
+    });
   }
 
-  // wheel
-  let wheelCooldown=false;
-  window.addEventListener('wheel', (e)=>{
-    e.preventDefault();
-    if(wheelCooldown) return;
-    wheelCooldown = true;
-    setTimeout(()=>wheelCooldown=false, DURATION);
-    if(e.deltaY>10) goTo(current+1);
-    else if(e.deltaY<-10) goTo(current-1);
-  }, {passive:false});
-
-  // keyboard
-  window.addEventListener('keydown', (e)=>{
-    if(['ArrowDown','PageDown'].includes(e.key)){ e.preventDefault(); goTo(current+1); }
-    if(['ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); goTo(current-1); }
-  });
-
-  // touch
-  let touchStartY=null;
-  window.addEventListener('touchstart', (e)=>{touchStartY=e.touches[0].clientY;}, {passive:true});
-  window.addEventListener('touchmove', (e)=>{e.preventDefault();}, {passive:false});
-  window.addEventListener('touchend', (e)=>{
-    if(touchStartY===null) return;
-    const dy = touchStartY - e.changedTouches[0].clientY;
-    if(Math.abs(dy)>40){ dy>0 ? goTo(current+1) : goTo(current-1); }
-    touchStartY=null;
-  }, {passive:true});
-
-  render();
+  updateChrome();
 </script>
+
 </body>
 </html>
