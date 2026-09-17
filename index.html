@@ -136,15 +136,43 @@
   /* ---- Le Aree grid ---- */
   .aree-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; width:100%; max-width:1040px;}
   .area-tile{
-    position:relative; height:150px; border-radius:4px; overflow:hidden; cursor:default;
-    border:1px solid var(--line-dark);
+    position:relative; height:150px; border-radius:4px; overflow:hidden; cursor:pointer;
+    border:1px solid var(--line-dark); background:none; padding:0; display:block; width:100%;
+    font:inherit; text-align:inherit; -webkit-appearance:none;
   }
+  .area-tile:focus-visible{outline:2px solid var(--azure-light); outline-offset:2px;}
   .area-tile .bg-photo{opacity:.28; transition:opacity .4s ease, transform .5s ease;}
-  .area-tile:hover .bg-photo{opacity:.55; transform:scale(1.06);}
+  .area-tile:hover .bg-photo, .area-tile:focus-visible .bg-photo{opacity:.55; transform:scale(1.06);}
   .area-tile .tile-veil{position:absolute; inset:0; background:linear-gradient(200deg, rgba(22,58,86,.4), rgba(22,58,86,.88));}
   .area-tile .tile-content{position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:16px;}
   .area-tile .num{font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--azure-light); margin-bottom:6px;}
-  .area-tile .name{font-family:'Lora', serif; font-size:15.5px; color:#fff;}
+  .area-tile .name{font-family:'Lora', serif; font-size:15.5px; color:#fff; text-align:left;}
+
+  /* ---- Pop-up dettaglio area ---- */
+  .area-modal-backdrop{
+    position:fixed; inset:0; background:rgba(8,16,26,.72); backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center; padding:24px; z-index:100;
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .area-modal-backdrop.open{opacity:1; pointer-events:auto;}
+  .area-modal-box{
+    background:var(--ink); border:1px solid var(--line-dark); border-radius:10px;
+    max-width:560px; width:100%; max-height:80vh; overflow-y:auto;
+    padding:44px 36px 36px; position:relative; transform:translateY(16px); transition:transform .3s ease;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+  }
+  .area-modal-backdrop.open .area-modal-box{transform:translateY(0);}
+  .area-modal-close{
+    position:absolute; top:14px; right:14px; width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--line-dark); background:none; color:var(--azure-light);
+    font-size:20px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:background .2s ease;
+  }
+  .area-modal-close:hover, .area-modal-close:focus-visible{background:rgba(255,255,255,.08);}
+  .area-modal-num{font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.14em; color:var(--azure-light); text-transform:uppercase;}
+  .area-modal-title{font-family:'Lora', serif; font-size:28px; color:var(--paper); margin:10px 0 20px;}
+  .area-modal-body p{font-family:'Inter', sans-serif; font-size:15px; line-height:1.7; color:var(--steel); margin-bottom:14px;}
+  .area-modal-body p:last-child{margin-bottom:0;}
 
   /* ---- Chi sono layout ---- */
   .split{display:flex; align-items:center; align-self:stretch; width:100%;}
@@ -273,25 +301,12 @@
   </section>
 
   <!-- 4. AREA DETTAGLIO -->
-  <section data-bg="dark" data-label="Un'area — Ansia">
-    <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/naxqavgg/image/upload/f_auto,q_auto,w_1600/v1789660209/A7C034C3-2B4B-4A4E-B912-717DD99994E3.jpg');"></div>
-    <div class="veil-azure"></div>
-    <div class="content">
-      <div class="content-inner">
-        <span class="eyebrow">Sezione 7 · Un'area — esempio</span>
-        <h1 class="hero-title" style="font-style:italic; font-size:clamp(34px,4.6vw,58px);">Ansia</h1>
-        <p class="body-text" style="color:#EAF6FC;">Un'agitazione interna, un senso d'allarme senza causa apparente: a volte prende il corpo, altre volte diventa un'ombra costante che toglie vitalità. Il percorso psicoanalitico dà parola a ciò che il sintomo maschera, per restituire spazio al desiderio.</p>
-        <span class="eyebrow" style="margin-top:10px;">01/08 — scorri per le altre sette aree</span>
-      </div>
-    </div>
-  </section>
-
   <!-- 5. MANIFESTO -->
   <section data-bg="dark" data-label="Manifesto">
     <div class="glow" style="width:520px;height:520px; left:50%; top:50%; transform:translate(-50%,-50%);"></div>
     <div class="content" style="text-align:center;">
       <div class="content-inner" style="max-width:820px; margin:0 auto;">
-        <span class="eyebrow" style="text-align:center;">Sezione 8 · Manifesto</span>
+        <span class="eyebrow" style="text-align:center;">Sezione 7 · Manifesto</span>
         <p class="quote-big">Il sintomo non è solo qualcosa da eliminare.<br>È un messaggio dell'inconscio<br>che cerca, ancora, di farsi ascoltare.</p>
         <p style="margin-top:22px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:var(--steel);">— liberamente ispirato a S. Freud</p>
       </div>
@@ -302,7 +317,7 @@
   <section data-bg="light" data-label="Contatti">
     <div class="content" style="color:var(--text-dark);">
       <div class="content-inner" style="max-width:900px;">
-        <span class="eyebrow dark">Sezione 9 · Contatti</span>
+        <span class="eyebrow dark">Sezione 8 · Contatti</span>
         <h2 class="section-title">Un primo passo, a parole</h2>
         <div class="contact-grid">
           <div>
@@ -327,6 +342,15 @@
 
 </div>
 
+<div class="area-modal-backdrop" id="areaModalBackdrop">
+  <div class="area-modal-box" role="dialog" aria-modal="true" aria-labelledby="areaModalTitle">
+    <button class="area-modal-close" id="areaModalClose" aria-label="Chiudi">&times;</button>
+    <span class="area-modal-num" id="areaModalNum"></span>
+    <h3 class="area-modal-title" id="areaModalTitle"></h3>
+    <div class="area-modal-body" id="areaModalBody"></div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
 <script>
   const sections = Array.from(document.querySelectorAll('#track > section'));
@@ -337,24 +361,71 @@
 
   // costruisci griglia aree
   const aree = [
-    {nome:"Ansia", foto:"A7C034C3-2B4B-4A4E-B912-717DD99994E3.jpg", v:"1789660209"},
-    {nome:"Attacchi di panico", foto:"C5FA546B-5F83-4411-8015-DC44298FADEE.jpg", v:"1789660438"},
-    {nome:"Depressione", foto:"2F2602FB-C8A6-473C-9B17-1CBE45225A10.jpg", v:"1789660256"},
-    {nome:"Traumi e lutti", foto:"B3650607-B38E-42EE-8946-E4B716C9035D.jpg", v:"1789660344"},
-    {nome:"Disturbi alimentari", foto:"1B5B924D-BC00-44E2-AE1B-DF149010882E.jpg", v:"1789660306"},
-    {nome:"Disturbi psicosomatici", foto:"9C5A32D5-9D38-402F-AB51-441CE7E3D214.jpg", v:"1789660501"},
-    {nome:"Dipendenze patologiche", foto:"3FA64497-8DF9-4777-A0FE-F9383A026AAF.jpg", v:"1789660530"},
-    {nome:"Terapia di coppia", foto:"93C75941-F7AB-490D-A077-E1E81A6F9A70.jpg", v:"1789660456"},
+    {nome:"Ansia", foto:"A7C034C3-2B4B-4A4E-B912-717DD99994E3.jpg", v:"1789660209", testo:[
+      "L'ansia si manifesta come un'agitazione interna, un senso d'allarme senza causa apparente. A volte prende il corpo (tachicardia, respiro corto, pensieri ingombranti), altre volte si manifesta come un'ombra costante che toglie vitalità.",
+      "L'obiettivo di un percorso psicoanalitico è quello di dare parola a ciò che il sintomo maschera, liberando il soggetto da ciò che lo invade per dare spazio al proprio desiderio."
+    ]},
+    {nome:"Attacchi di panico", foto:"C5FA546B-5F83-4411-8015-DC44298FADEE.jpg", v:"1789660438", testo:[
+      "L'attacco di panico è la manifestazione di qualcosa di profondo, rimosso o non elaborato che irrompe improvvisamente nella coscienza in modo violento. È la rappresentazione di un trauma che finora non ha trovato parola e che reclama ascolto.",
+      "In psicoanalisi non ci si limita a calmare il sintomo ma si cerca di comprenderne il senso."
+    ]},
+    {nome:"Depressione", foto:"2F2602FB-C8A6-473C-9B17-1CBE45225A10.jpg", v:"1789660256", testo:[
+      "La depressione è uno stato profondo in cui l'energia vitale sembra spegnersi, è una sofferenza dell'anima che va ascoltata con rispetto.",
+      "In psicoanalisi il lavoro non si limita a rimuovere il sintomo, ma a capire cosa c'è dietro quel dolore, per restituire senso e parola a ciò che non è stato finora elaborato."
+    ]},
+    {nome:"Traumi e lutti", foto:"B3650607-B38E-42EE-8946-E4B716C9035D.jpg", v:"1789660344", testo:[
+      "Il trauma è un evento che la mente non riesce ad elaborare, lasciando il soggetto che lo vive in una posizione di inermità. Il lavoro analitico consiste nel riavvicinarsi a quell'esperienza lentamente e in sicurezza, per dare senso a ciò che il soggetto non ha potuto comprendere e mettere in parola.",
+      "Il lutto è un evento traumatico che si manifesta con la perdita di una persona cara, di un amore, di un ruolo, di un'idea, che come dice Freud, necessita di un tempo di elaborazione per potersi riaprire alla vita."
+    ]},
+    {nome:"Disturbi alimentari", foto:"1B5B924D-BC00-44E2-AE1B-DF149010882E.jpg", v:"1789660306", testo:[
+      "In psicoanalisi si considera che il rapporto con il cibo sia profondamente legato al rapporto con l'Altro (la madre, la famiglia, il desiderio dell'Altro). Mangiare troppo, mangiare nulla, vomitare o abbuffarsi, sono modi inconsci di gestire emozioni insopportabili.",
+      "Il metodo psicoanalitico non si concentra sul comportamento alimentare, ma cerca di ascoltare il significato soggettivo di quel sintomo."
+    ]},
+    {nome:"Disturbi psicosomatici", foto:"9C5A32D5-9D38-402F-AB51-441CE7E3D214.jpg", v:"1789660501", testo:[
+      "I disturbi psicosomatici non dipendono da una causa organica evidente, sebbene il dolore sia autentico, ma hanno un'origine psichica. È come se qualcosa di fortemente stressante o traumatizzante trovasse un canale diretto nel corpo: il corpo parla al posto delle parole.",
+      "Il percorso psicoanalitico non si limita a calmare i sintomi ma cerca di ascoltare cosa quel corpo sta dicendo."
+    ]},
+    {nome:"Dipendenze patologiche", foto:"3FA64497-8DF9-4777-A0FE-F9383A026AAF.jpg", v:"1789660530", testo:[
+      "Dal punto di vista psicoanalitico, la dipendenza non è solo un vizio, ma un tentativo estremo di colmare un vuoto interiore, un'angoscia profonda, un dolore intollerabile che non ha trovato parola.",
+      "Il lavoro analitico dà parola a ciò che il soggetto sta cercando attraverso quella dipendenza, aprendo a un percorso trasformativo in cui il soggetto può tornare ad abitare il proprio desiderio."
+    ]},
+    {nome:"Terapia di coppia", foto:"93C75941-F7AB-490D-A077-E1E81A6F9A70.jpg", v:"1789660456", testo:[
+      "Nella terapia di coppia uno dei due partner o entrambi portano una sofferenza del legame che nasce a seguito di conflitti ripetuti, incomunicabilità, tradimenti, insoddisfazione sessuale.",
+      "In psicoanalisi la coppia non viene trattata come un'unità da \"aggiustare\", ma come due soggetti in relazione, ognuno con la propria storia, i propri conflitti, le proprie questioni."
+    ]},
   ];
   const grid = document.getElementById('areeGrid');
+  const areaModalBackdrop = document.getElementById('areaModalBackdrop');
+  const areaModalNum = document.getElementById('areaModalNum');
+  const areaModalTitle = document.getElementById('areaModalTitle');
+  const areaModalBody = document.getElementById('areaModalBody');
+  const areaModalClose = document.getElementById('areaModalClose');
+
+  function openAreaModal(area, index){
+    areaModalNum.textContent = `0${index+1}/08 · Le aree di intervento`;
+    areaModalTitle.textContent = area.nome;
+    areaModalBody.innerHTML = area.testo.map(p => `<p>${p}</p>`).join('');
+    areaModalBackdrop.classList.add('open');
+    areaModalClose.focus();
+  }
+  function closeAreaModal(){
+    areaModalBackdrop.classList.remove('open');
+  }
+  areaModalClose.addEventListener('click', closeAreaModal);
+  areaModalBackdrop.addEventListener('click', (e)=>{ if(e.target === areaModalBackdrop) closeAreaModal(); });
+  window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeAreaModal(); });
+
   aree.forEach((area,i)=>{
-    const tile = document.createElement('div');
+    const tile = document.createElement('button');
     tile.className='area-tile';
+    tile.setAttribute('type','button');
+    tile.setAttribute('aria-haspopup','dialog');
     const url = `https://res.cloudinary.com/naxqavgg/image/upload/f_auto,q_auto,w_800/v${area.v}/${area.foto}`;
     tile.innerHTML = `
       <div class="bg-photo" style="background-image:url('${url}');"></div>
       <div class="tile-veil"></div>
       <div class="tile-content"><span class="num">0${i+1}</span><span class="name">${area.nome}</span></div>`;
+    tile.addEventListener('click', ()=> openAreaModal(area, i));
     grid.appendChild(tile);
   });
 
