@@ -274,7 +274,7 @@
 
   <!-- 4. AREA DETTAGLIO -->
   <section data-bg="dark" data-label="Un'area — Ansia">
-    <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/naxqavgg/image/upload/f_auto,q_auto,w_1600/v1789543571/IMG_1973.jpg');"></div>
+    <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/naxqavgg/image/upload/f_auto,q_auto,w_1600/v1789660209/A7C034C3-2B4B-4A4E-B912-717DD99994E3.jpg');"></div>
     <div class="veil-azure"></div>
     <div class="content">
       <div class="content-inner">
@@ -336,15 +336,25 @@
   let current = 0;
 
   // costruisci griglia aree
-  const aree = ["Ansia","Attacchi di panico","Depressione","Traumi e lutti","Disturbi alimentari","Disturbi psicosomatici","Dipendenze patologiche","Terapia di coppia"];
+  const aree = [
+    {nome:"Ansia", foto:"A7C034C3-2B4B-4A4E-B912-717DD99994E3.jpg", v:"1789660209"},
+    {nome:"Attacchi di panico", foto:"C5FA546B-5F83-4411-8015-DC44298FADEE.jpg", v:"1789660438"},
+    {nome:"Depressione", foto:"2F2602FB-C8A6-473C-9B17-1CBE45225A10.jpg", v:"1789660256"},
+    {nome:"Traumi e lutti", foto:"B3650607-B38E-42EE-8946-E4B716C9035D.jpg", v:"1789660344"},
+    {nome:"Disturbi alimentari", foto:"1B5B924D-BC00-44E2-AE1B-DF149010882E.jpg", v:"1789660306"},
+    {nome:"Disturbi psicosomatici", foto:"9C5A32D5-9D38-402F-AB51-441CE7E3D214.jpg", v:"1789660501"},
+    {nome:"Dipendenze patologiche", foto:"3FA64497-8DF9-4777-A0FE-F9383A026AAF.jpg", v:"1789660530"},
+    {nome:"Terapia di coppia", foto:"93C75941-F7AB-490D-A077-E1E81A6F9A70.jpg", v:"1789660456"},
+  ];
   const grid = document.getElementById('areeGrid');
-  aree.forEach((nome,i)=>{
+  aree.forEach((area,i)=>{
     const tile = document.createElement('div');
     tile.className='area-tile';
+    const url = `https://res.cloudinary.com/naxqavgg/image/upload/f_auto,q_auto,w_800/v${area.v}/${area.foto}`;
     tile.innerHTML = `
-      <div class="bg-photo" style="background-image:url('https://res.cloudinary.com/naxqavgg/image/upload/f_auto,q_auto,w_1600/v1789543571/IMG_1975.jpg');"></div>
+      <div class="bg-photo" style="background-image:url('${url}');"></div>
       <div class="tile-veil"></div>
-      <div class="tile-content"><span class="num">0${i+1}</span><span class="name">${nome}</span></div>`;
+      <div class="tile-content"><span class="num">0${i+1}</span><span class="name">${area.nome}</span></div>`;
     grid.appendChild(tile);
   });
 
