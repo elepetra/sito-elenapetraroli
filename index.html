@@ -129,6 +129,7 @@
   }
   .dotnav button.active .lbl{opacity:1; max-width:220px;}
   .dotnav.on-light button .idx, .dotnav.on-light button .tick, .dotnav.on-light button .lbl{color:var(--azure);}
+  .dotnav.full-opacity button .idx, .dotnav.full-opacity button .tick{opacity:1;}
 
   /* ---- scroll hint ---- */
   .scroll-hint{
@@ -488,10 +489,12 @@
     dots().forEach((d,i)=>d.classList.toggle('active', i===current));
     const bgMode = sections[current].dataset.bg;
     const label = sections[current].dataset.label;
-    const dotnavOnLight = bgMode==='light' || label==='Chi sono' || label==='Contatti';
+    const dotnavOnLight = bgMode==='light' || label==='Home' || label==='Chi sono' || label==='Contatti';
+    const dotnavFullOpacity = label==='Chi sono' || label==='Contatti';
     logoFixed.classList.toggle('on-light', bgMode==='light');
     topBar.classList.toggle('on-light', bgMode==='light');
     dotnav.classList.toggle('on-light', dotnavOnLight);
+    dotnav.classList.toggle('full-opacity', dotnavFullOpacity);
   }
 
   // ---- IntersectionObserver: rivela i contenuti e aggiorna nav/logo mentre si scorre ----
