@@ -128,8 +128,9 @@
     white-space:nowrap; opacity:0; max-width:0; overflow:hidden; transition:opacity .3s ease, max-width .35s ease;
   }
   .dotnav button.active .lbl{opacity:1; max-width:220px;}
-  .dotnav.on-light button .idx, .dotnav.on-light button .tick, .dotnav.on-light button .lbl{color:var(--azure);}
-  .dotnav.full-opacity button .idx, .dotnav.full-opacity button .tick{opacity:1;}
+  .dotnav.on-light button{filter:none;}
+  .dotnav.on-light button .idx, .dotnav.on-light button .tick, .dotnav.on-light button .lbl{color:var(--azure); opacity:1;}
+  .dotnav.on-light button:hover .idx, .dotnav.on-light button:hover .tick{opacity:1;}
 
   /* ---- scroll hint ---- */
   .scroll-hint{
@@ -294,7 +295,7 @@
   <section data-bg="dark" data-label="Chi sono">
     <div class="split">
       <div class="split-text">
-        <span class="eyebrow" style="text-align:center;">Sezione 5 · Chi sono</span>
+        <span class="eyebrow">Sezione 5 · Chi sono</span>
         <h2 class="section-title">Il metodo psicoanalitico<br>come pratica viva</h2>
         <p class="body-text">Pratico il metodo psicoanalitico secondo l'insegnamento di Freud, Lacan e Recalcati. Credo nella parola come strumento di cura e trasformazione, capace di accogliere le domande della contemporaneità.</p>
         <p class="body-text">Svolgo la mia attività clinica a Lecce come libera professionista, con particolare attenzione ai nuovi sintomi. Sono docente tutor presso la scuola di specializzazione I.R.P.A. di Ancona.</p>
@@ -331,7 +332,7 @@
       <div class="content-inner" style="max-width:820px; margin:0 auto;">
         <span class="eyebrow" style="text-align:center;">Sezione 7 · Manifesto</span>
         <p class="quote-big" style="text-align:left;">Il sintomo non è solo qualcosa da eliminare.<br>È un messaggio dell'inconscio<br>che cerca, ancora, di farsi ascoltare.</p>
-        <p style="margin-top:22px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:var(--steel);">— liberamente ispirato a S. Freud</p>
+        <p style="margin-top:22px; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.1em; color:var(--steel);">Liberamente ispirato a Sigmund Freud</p>
       </div>
     </div>
     <div class="scroll-hint">Scorri
@@ -344,7 +345,7 @@
     <div class="content" style="color:var(--text-dark); text-align:center; display:flex; flex-direction:column; align-items:center;">
       <div class="content-inner" style="max-width:900px;">
         <span class="eyebrow dark">Sezione 8 · Contatti</span>
-        <h2 class="section-title">Un primo passo, a parole</h2>
+        <h2 class="section-title">Un primo passo</h2>
         <div class="contact-grid">
           <div>
             <div class="info-row"><span class="k">Indirizzo</span><span class="v">Via Imbriani 17 - 73100 Lecce</span></div>
@@ -489,12 +490,12 @@
     dots().forEach((d,i)=>d.classList.toggle('active', i===current));
     const bgMode = sections[current].dataset.bg;
     const label = sections[current].dataset.label;
-    const dotnavOnLight = bgMode==='light' || label==='Home' || label==='Chi sono' || label==='Contatti';
-    const dotnavFullOpacity = label==='Chi sono' || label==='Contatti';
     logoFixed.classList.toggle('on-light', bgMode==='light');
     topBar.classList.toggle('on-light', bgMode==='light');
+    // il dotnav sta a destra: nelle sezioni con foto affiancata (Home, Chi sono)
+    // quel lato è visivamente chiaro anche se la sezione è "dark"
+    const dotnavOnLight = bgMode==='light' || label==='Home' || label==='Chi sono';
     dotnav.classList.toggle('on-light', dotnavOnLight);
-    dotnav.classList.toggle('full-opacity', dotnavFullOpacity);
   }
 
   // ---- IntersectionObserver: rivela i contenuti e aggiorna nav/logo mentre si scorre ----
