@@ -487,9 +487,11 @@
   function updateChrome(){
     dots().forEach((d,i)=>d.classList.toggle('active', i===current));
     const bgMode = sections[current].dataset.bg;
+    const label = sections[current].dataset.label;
+    const dotnavOnLight = bgMode==='light' || label==='Chi sono' || label==='Contatti';
     logoFixed.classList.toggle('on-light', bgMode==='light');
     topBar.classList.toggle('on-light', bgMode==='light');
-    dotnav.classList.toggle('on-light', bgMode==='light');
+    dotnav.classList.toggle('on-light', dotnavOnLight);
   }
 
   // ---- IntersectionObserver: rivela i contenuti e aggiorna nav/logo mentre si scorre ----
